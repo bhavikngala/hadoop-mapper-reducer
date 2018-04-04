@@ -7,7 +7,16 @@ current_word = None
 current_count = 0
 word = None
 
-for line in sys.stdin:
+while True:
+#for line in sys.stdin:
+	line = sys.stdin.readline()
+	if not line:
+		break
+
+	f = open('/home/hadoop/Desktop/lab2/wordcoount/reduceInput.txt', 'wa')
+	f.write(line+'\n')
+	f.close()
+
 	line = line.strip()
 
 	word, count = line.split('\t')
