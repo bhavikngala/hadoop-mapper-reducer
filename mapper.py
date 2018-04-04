@@ -22,8 +22,8 @@ ps = PorterStemmer()
 
 # compile a pattern to check if word contains
 # .,!?') at its end'
-symbolPatternAtEnd = re.compile("[\.,!?'\)\]\}%\":;><|-]*$")
-symbolPatternAtStart = re.compile("[\.,!?'\)\]\}%\":;><|-]*$")
+symbolPatternAtEnd = re.compile("[#\.,!?'\)\]\}%\":;><|-]*$")
+symbolPatternAtStart = re.compile("^[#\.,!?'\)\]\}%\":;><|-]*")
 
 # combiner dictionary
 # structure to imitate associative array
@@ -39,6 +39,8 @@ for line in sys.stdin:
 	words = line.split()
 
 	for word in words:
+		# convert to ascii encoding
+		word = unicode(word, errors='ignore').encode('ascii')
 
 		# remove punctuation at the end of the word if any
 		s = re.findall(symbolPatternAtEnd, word)[0]
@@ -68,4 +70,5 @@ for line in sys.stdin:
 		
 # emit word counts from combiner
 for word in combiner.keys():
-	print('%s\t%s' % (word, str(combiner.get(word))))
+	if len(word.strip()) > 0:
+		print '%s\t%s' % (word, str(combiner.get(word)))
