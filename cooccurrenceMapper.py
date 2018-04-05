@@ -76,15 +76,15 @@ def formatInputWords(self, line):
 	words = [removeLeadingAndTrailingSymbolsFromWord(word) \
 			 for word in words]
 	# lemmatize words
-	words = [lemmatizer.lemmatize(word) for word in words]
+	words = [(lemmatizer.lemmatize(word)).lower() for word in words]
 
 	return words
 
 def removeLeadingAndTrailingSymbolsFromWord(word):
 	# compile a pattern to check if word contains
 	# .,!?') at its end'
-	symbolPatternAtEnd = re.compile("[\$\&\#\.,!?'\(\)\]\}%\":;><|\-0-9]*$")
-	symbolPatternAtStart = re.compile("^[\&\$\#\.,!?'\(\)\]\}%\":;><|\-0-9]*")
+	symbolPatternAtEnd = re.compile("[/\@\*\$\&\#\.,!?'\(\)\]\}%\":;><|\-0-9]*$")
+	symbolPatternAtStart = re.compile("^[/\@\*\&\$\#\.,!?'\(\)\]\}%\":;><|\-0-9]*")
 	# remove punctuation at the end of the word if any
 	s = re.findall(symbolPatternAtEnd, word)[0]
 	if len(s) > 0:
