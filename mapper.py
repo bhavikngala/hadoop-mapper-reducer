@@ -23,8 +23,8 @@ def singleWordCountMapper():
 
 	# compile a pattern to check if word contains
 	# .,!?') at its end'
-	symbolPatternAtEnd = re.compile("[#\.,!?'\(\)\]\}%\":;><|\-0-9]*$")
-	symbolPatternAtStart = re.compile("^[#\.,!?'\(\)\]\}%\":;><|\-0-9]*")
+	symbolPatternAtEnd = re.compile("[\$\&\#\.,!?'\(\)\]\}%\":;><|\-0-9]*$")
+	symbolPatternAtStart = re.compile("^[\&\$\#\.,!?'\(\)\]\}%\":;><|\-0-9]*")
 
 	# combiner dictionary
 	# structure to imitate associative array
