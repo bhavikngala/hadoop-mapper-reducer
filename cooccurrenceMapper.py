@@ -83,8 +83,8 @@ def formatInputWords(self, line):
 def removeLeadingAndTrailingSymbolsFromWord(word):
 	# compile a pattern to check if word contains
 	# .,!?') at its end'
-	symbolPatternAtEnd = re.compile("[/\@\*\$\&\#\.,!?'\(\)\]\}%\":;><|\-0-9]*$")
-	symbolPatternAtStart = re.compile("^[/\@\*\&\$\#\.,!?'\(\)\]\}%\":;><|\-0-9]*")
+	symbolPatternAtEnd = re.compile("[\+\=\[_/\@\*\$\&\#\.,!?'\(\)\]\}%\":;><|\-0-9]*$")
+	symbolPatternAtStart = re.compile("^[\+\=\[_/\@\*\&\$\#\.,!?'\(\)\]\}%\":;><|\-0-9]*")
 	# remove punctuation at the end of the word if any
 	s = re.findall(symbolPatternAtEnd, word)[0]
 	if len(s) > 0:

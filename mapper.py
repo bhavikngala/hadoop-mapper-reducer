@@ -23,8 +23,8 @@ def singleWordCountMapper():
 
 	# compile a pattern to check if word contains
 	# .,!?') at its end'
-	symbolPatternAtEnd = re.compile("[/\@\*\$\&\#\.,!?'\(\)\]\}%\":;><|\-0-9]*$")
-	symbolPatternAtStart = re.compile("^[/\@\*\&\$\#\.,!?'\(\)\]\}%\":;><|\-0-9]*")
+	symbolPatternAtEnd = re.compile("[\+\=\[_/\@\*\$\&\#\.,!?'\(\)\]\}%\":;><|\-0-9]*$")
+	symbolPatternAtStart = re.compile("^[\+\=\[_/\@\*\&\$\#\.,!?'\(\)\]\}%\":;><|\-0-9]*")
 
 	# combiner dictionary
 	# structure to imitate associative array
@@ -61,7 +61,7 @@ def singleWordCountMapper():
 			if not word in stopwordsList and not word[:5] == 'https':
 				# lemmatize the word
 				wordLemma = (lemmatizer.lemmatize(word)).lower()
-
+				
 				# add word to combiner dictionary
 				# if word is already present in dictionary
 				# then increment the count
