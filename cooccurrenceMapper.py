@@ -48,9 +48,10 @@ class Mapper:
 
 				# 2 refer above
 				# any word is neighbour with word of interest
-				if not word2 in stopwordsList:
-					key = word1 + '~:::~' + word2
-					self.updateCombiner(key)
+				if not word1 in stopwordsList and not word2 in stopwordsList:
+					if word1 in cooccurrenceList or word2 in cooccurrenceList:
+						key = word1 + '~:::~' + word2
+						self.updateCombiner(key)
 
 	def updateCombiner(self, key, count=1):
 		if key in combiner:
