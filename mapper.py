@@ -33,41 +33,45 @@ def singleWordCountMapper():
 	# iterate over all the lines in the stdin
 	for line in sys.stdin:
 
-	# remove leading and trailing whitespaces
-	line = line.strip()
+		# remove leading and trailing whitespaces
+		line = line.strip()
 
-	# split the line into list of words
-	words = line.split()
+		# split the line into list of words
+		words = line.split()
 
-	for word in words:
 		# convert to ascii encoding
-		word = unicode(word, errors='ignore').encode('ascii')
+		words = [unicode(word, errors='ignore').encode('ascii') \
+				 for word in words]
 
-		# remove punctuation at the end of the word if any
-		s = re.findall(symbolPatternAtEnd, word)[0]
-		if len(s) > 0:
-			word = word[:-1 * (len(s))]
+		for word in words:
+			# convert to ascii encoding
+			# word = unicode(word, errors='ignore').encode('ascii')
 
-		# remove punctuation at the start of the word if any
-		s = re.findall(symbolPatternAtStart, word)[0]
-		if len(s) > 0:
-			word = word[len(s):]
+			# remove punctuation at the end of the word if any
+			s = re.findall(symbolPatternAtEnd, word)[0]
+			if len(s) > 0:
+				word = word[:-1 * (len(s))]
 
-		# if the word is not in stop words list and not hyperlinks
-		if not word in stopwordsList and not word[:5] == 'https':
-			# lemmatize the word
-			wordLemma = lemmatizer.lemmatize(word)
+			# remove punctuation at the start of the word if any
+			s = re.findall(symbolPatternAtStart, word)[0]
+			if len(s) > 0:
+				word = word[len(s):]
 
-			# add word to combiner dictionary
-			# if word is already present in dictionary
-			# then increment the count
-			if wordLemma in combiner:
-				count = combiner.get(wordLemma) + 1
-				combiner.update({wordLemma:count})
-			# if word is not present in dictionary then
-			# add the word with count 1
-			else:
-				combiner.update({wordLemma:1})
+			# if the word is not in stop words list and not hyperlinks
+			if not word in stopwordsList and not word[:5] == 'https':
+				# lemmatize the word
+				wordLemma = lemmatizer.lemmatize(word)
+
+				# add word to combiner dictionary
+				# if word is already present in dictionary
+				# then increment the count
+				if wordLemma in combiner:
+					count = combiner.get(wordLemma) + 1
+					combiner.update({wordLemma:count})
+				# if word is not present in dictionary then
+				# add the word with count 1
+				else:
+					combiner.update({wordLemma:1})
 		
 	# emit word counts from combiner
 	for word in combiner.keys():
