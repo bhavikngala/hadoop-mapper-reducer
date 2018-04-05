@@ -16,10 +16,6 @@ def singleWordCountReducer():
 		if not line:
 			break
 
-		f = open('/home/hadoop/Desktop/lab2/wordcoount/reduceInput.txt', 'wa')
-		f.write(line+'\n')
-		f.close()
-
 		line = line.strip()
 
 		word, count = line.split('\t')
@@ -36,7 +32,7 @@ def singleWordCountReducer():
 				# emit only if count exceeds 5
 				# this filters alot of words with count just 1
 				if current_count > 5:
-					print(outputStringFormats % (current_word, current_count))
+					print(outputStringFormat % (current_word, current_count))
 
 			current_count = count
 			current_word = word
