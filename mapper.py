@@ -9,14 +9,14 @@
 import sys
 
 import nltk
-from nltk.corpus import stopwords
+from spacy.lang.en.stop_words import STOP_WORDS
 from nltk.stem import WordNetLemmatizer
 
 import re
 
 def singleWordCountMapper():
 	# list of stop words
-	stopwordsList = stopwords.words('english')
+	# stopwordsList = stopwords.words('english')
 
 	# lemmatizing object
 	lemmatizer = WordNetLemmatizer()
@@ -57,11 +57,11 @@ def singleWordCountMapper():
 			if len(s) > 0:
 				word = word[len(s):]
 
+			# lemmatize the word
+			wordLemma = (lemmatizer.lemmatize(word)).lower()
+
 			# if the word is not in stop words list and not hyperlinks
-			if not word in stopwordsList and not word[:5] == 'https':
-				# lemmatize the word
-				wordLemma = (lemmatizer.lemmatize(word)).lower()
-				
+			if not wordLemma in STOP_WORDS and not wordLemma[:5] == 'https':
 				# add word to combiner dictionary
 				# if word is already present in dictionary
 				# then increment the count
@@ -76,7 +76,7 @@ def singleWordCountMapper():
 	# emit word counts from combiner
 	for word in combiner.keys():
 		if len(word.strip()) > 0:
-			print '%s\t%s' % (word, str(combiner.get(word)))
+			print '%s\t%s' % (word, combiner.get(word))
 
 if __name__ == '__main__':
 	singleWordCountMapper()
