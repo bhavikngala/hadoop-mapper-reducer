@@ -30,7 +30,7 @@ class Mapper:
 		# initializing empty combiner dictionary
 		self.combiner = {}
 
-	def cooccurrenceMapper(cooccurrenceList):
+	def cooccurrenceMapper(self, cooccurrenceList):
 		# iterate over all the lines in the stdin
 		for line in sys.stdin:
 			# split line into formatted words
@@ -38,30 +38,31 @@ class Mapper:
 
 			# iterate over neighbours
 			for word1, word2 in zip(words[:-1], words[1:]):
-				# 1 refer above
-				# if words of interest are neighbours
-				# if word1 in cooccurrenceList and word2 in cooccurrenceList:
-				#	key = word1 + '~:::~' + word2 + '_t10'
-				#	self.updateCombiner(key)
+				if len(word1.strip()) > 0 and len(word2.strip()) > 0:
+					# 1 refer above
+					# if words of interest are neighbours
+					# if word1 in cooccurrenceList and word2 in cooccurrenceList:
+					#	key = word1 + '~:::~' + word2 + '_t10'
+					#	self.updateCombiner(key)
 
-				# 2 refer above
-				# any word is neighbour with word of interest
-				if not word1 in STOP_WORDS and not word2 in STOP_WORDS:
-					if word1 in cooccurrenceList or word2 in cooccurrenceList:
-						key = word1 + ' ' + word2
-						self.updateCombiner(key)
+					# 2 refer above
+					# any word is neighbour with word of interest
+					if not word1 in STOP_WORDS and not word2 in STOP_WORDS:
+						if word1 in cooccurrenceList or word2 in cooccurrenceList:
+							key = word1 + ' ' + word2
+							self.updateCombiner(key)
 
 	def updateCombiner(self, key, count=1):
-		if key in combiner:
-			combiner.update({key:(combiner.get(key)+1)})
+		if key in self.combiner:
+			self.combiner.update({key:(self.combiner.get(key)+1)})
 		else:
-			combiner.update({key:1})
+			self.combiner.update({key:1})
 
 	def emitWords(self):
 		for key, value in self.combiner.items():
 			print '%s\t%s' % (key, str(value))
 
-def formatInputWords(self, line):
+def formatInputWords(line):
 	# lemmatizing object
 	lemmatizer = WordNetLemmatizer()
 	# remove leading and trailing whitespaces
@@ -95,17 +96,29 @@ def removeLeadingAndTrailingSymbolsFromWord(word):
 
 	return word
 
+def updateStopWords():
+	# adding couple of stop words
+	STOP_WORDS.append("i'm")
+	STOP_WORDS.append("isn't")
+	STOP_WORDS.append("let's")
+	STOP_WORDS.append("ha")
+	STOP_WORDS.append("according")
+	STOP_WORDS.append("want")
+	STOP_WORDS.append("like")
+
 if __name__ == '__main__':
 	ap = argparse.ArgumentParser()
-	ap.add_argument('-f', '--filepath', required=True
+	ap.add_argument('-f', '--filepath', required=True,
 		help='file path of the top ten words')
-	args = var(ap.parse_args())
+	args = vars(ap.parse_args())
 
 	with open(args['filepath'], 'r') as f:
 		lines = f.readlines()
 
 	cooccurrenceList = [word.strip() for word in lines]
 	
+	updateStopWords()
+
 	mapper = Mapper()
 	mapper.cooccurrenceMapper(cooccurrenceList)
 	mapper.emitWords()
