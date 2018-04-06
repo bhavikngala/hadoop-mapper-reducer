@@ -98,13 +98,13 @@ def removeLeadingAndTrailingSymbolsFromWord(word):
 
 def updateStopWords():
 	# adding couple of stop words
-	STOP_WORDS.append("i'm")
-	STOP_WORDS.append("isn't")
-	STOP_WORDS.append("let's")
-	STOP_WORDS.append("ha")
-	STOP_WORDS.append("according")
-	STOP_WORDS.append("want")
-	STOP_WORDS.append("like")
+	STOP_WORDS.add("i'm")
+	STOP_WORDS.add("isn't")
+	STOP_WORDS.add("let's")
+	STOP_WORDS.add("ha")
+	STOP_WORDS.add("according")
+	STOP_WORDS.add("want")
+	STOP_WORDS.add("like")
 
 if __name__ == '__main__':
 	ap = argparse.ArgumentParser()
@@ -122,3 +122,7 @@ if __name__ == '__main__':
 	mapper = Mapper()
 	mapper.cooccurrenceMapper(cooccurrenceList)
 	mapper.emitWords()
+
+'''
+hadoop jar /home/hadoop/hadoop/contrib/hadoop-streaming-2.6.0.jar -file cooccurrenceMapper.py -file reducer.py -file top10wordsTwitter.txt -mapper './cooccurrenceMapper.py -f ./top10wordsTwitter.txt' -reducer reducer.py -input tweets_small_data -output tweets_small_data_cooccurrence
+'''
