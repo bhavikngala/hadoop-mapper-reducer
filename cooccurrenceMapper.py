@@ -16,9 +16,10 @@
 '''
 
 import sys
+import argparse
 
 import nltk
-from nltk.corpus import stopwords
+from spacy.lang.en.stop_words import STOP_WORDS
 from nltk.stem import WordNetLemmatizer
 
 import re
@@ -30,9 +31,6 @@ class Mapper:
 		self.combiner = {}
 
 	def cooccurrenceMapper(cooccurrenceList):
-		# list of stop words
-		stopwordsList = stopwords.words('english')
-
 		# iterate over all the lines in the stdin
 		for line in sys.stdin:
 			# split line into formatted words
@@ -42,15 +40,15 @@ class Mapper:
 			for word1, word2 in zip(words[:-1], words[1:]):
 				# 1 refer above
 				# if words of interest are neighbours
-				if word1 in cooccurrenceList and word2 in cooccurrenceList:
-					key = word1 + '~:::~' + word2 + '_t10'
-					self.updateCombiner(key)
+				# if word1 in cooccurrenceList and word2 in cooccurrenceList:
+				#	key = word1 + '~:::~' + word2 + '_t10'
+				#	self.updateCombiner(key)
 
 				# 2 refer above
 				# any word is neighbour with word of interest
-				if not word1 in stopwordsList and not word2 in stopwordsList:
+				if not word1 in STOP_WORDS and not word2 in STOP_WORDS:
 					if word1 in cooccurrenceList or word2 in cooccurrenceList:
-						key = word1 + '~:::~' + word2
+						key = word1 + ' ' + word2
 						self.updateCombiner(key)
 
 	def updateCombiner(self, key, count=1):
@@ -98,7 +96,15 @@ def removeLeadingAndTrailingSymbolsFromWord(word):
 	return word
 
 if __name__ == '__main__':
-	cooccurrenceList = []
+	ap = argparse.ArgumentParser()
+	ap.add_argument('-f', '--filepath', required=True
+		help='file path of the top ten words')
+	args = var(ap.parse_args())
+
+	with open(args['filepath'], 'r') as f:
+		lines = f.readlines()
+
+	cooccurrenceList = [word.strip() for word in lines]
 	
 	mapper = Mapper()
 	mapper.cooccurrenceMapper(cooccurrenceList)
