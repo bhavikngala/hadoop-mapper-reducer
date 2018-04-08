@@ -25,12 +25,15 @@ from nltk.stem import WordNetLemmatizer
 import re
 
 class Mapper:
+	'''Mapper class, implementing mapper logic for cooccurrence of words'''
 
 	def __init__(self):
 		# initializing empty combiner dictionary
 		self.combiner = {}
 
 	def cooccurrenceMapper(self, cooccurrenceList):
+		'''Mapper function to emit cooccurrence count'''
+
 		# iterate over all the lines in the stdin
 		for line in sys.stdin:
 			# split line into formatted words
@@ -48,6 +51,8 @@ class Mapper:
 						self.updateCombiner(key)
 
 	def updateCombiner(self, key, count=1):
+		'''this function updates the combiner dictionary for the given key'''
+
 		if key in self.combiner:
 			self.combiner.update({key:(self.combiner.get(key)+1)})
 		else:
@@ -76,6 +81,8 @@ def formatInputWords(line):
 	return words
 
 def removeLeadingAndTrailingSymbolsFromWord(word):
+	'''this function formats the words in the input line to a standard format'''
+	
 	# compile a pattern to check if word contains
 	# .,!?') at its end'
 	symbolPatternAtEnd = re.compile("[\+\=\[_/\@\*\$\&\#\.,!?'\(\)\]\}%\":;><|\-0-9]*$")
@@ -92,6 +99,8 @@ def removeLeadingAndTrailingSymbolsFromWord(word):
 	return word
 
 def updateStopWords():
+	'''this function is used to update the stop words corpus'''
+	
 	# adding couple of stop words
 	STOP_WORDS.add("i'm")
 	STOP_WORDS.add("isn't")
