@@ -36,21 +36,16 @@ class Mapper:
 			# split line into formatted words
 			words = formatInputWords(line)
 
-			# iterate over neighbours
-			for word1, word2 in zip(words[:-1], words[1:]):
-				if len(word1.strip()) > 0 and len(word2.strip()) > 0:
-					# 1 refer above
-					# if words of interest are neighbours
-					# if word1 in cooccurrenceList and word2 in cooccurrenceList:
-					#	key = word1 + '~:::~' + word2 + '_t10'
-					#	self.updateCombiner(key)
-
-					# 2 refer above
-					# any word is neighbour with word of interest
-					if not word1 in STOP_WORDS and not word2 in STOP_WORDS:
-						if word1 in cooccurrenceList or word2 in cooccurrenceList:
-							key = word1 + ' ' + word2
-							self.updateCombiner(key)
+			# iterate over list of cooccurrenceList words
+			# outer loop iterates till cooccurrenceList[:-1]
+			# inner loop iterates over cooccurrenceList[i+1:]
+			for i in range(len(cooccurrenceList) - 1):
+				for j in range(i+1, len(cooccurrenceList)):
+					# if the words are in paragraph then they are
+					# cooccurring
+					if cooccurrenceList[i] in words and cooccurrenceList[j] in words:
+						key = cooccurrenceList[i] + ' ' + cooccurrenceList[j]
+						self.updateCombiner(key)
 
 	def updateCombiner(self, key, count=1):
 		if key in self.combiner:
