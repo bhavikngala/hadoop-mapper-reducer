@@ -47,20 +47,7 @@ class Mapper:
 					# if the words are in paragraph then they are
 					# cooccurring
 					if cooccurrenceList[i] in words and cooccurrenceList[j] in words:
-						key = cooccurrenceList[i] + ' ' + cooccurrenceList[j]
-						self.updateCombiner(key)
-
-	def updateCombiner(self, key, count=1):
-		'''this function updates the combiner dictionary for the given key'''
-
-		if key in self.combiner:
-			self.combiner.update({key:(self.combiner.get(key)+1)})
-		else:
-			self.combiner.update({key:1})
-
-	def emitWords(self):
-		for key, value in self.combiner.items():
-			print '%s\t%s' % (key, str(value))
+						print '%s\t%s' % (cooccurrenceList[i], cooccurrenceList[j])
 
 def formatInputWords(line):
 	# lemmatizing object
